@@ -11,6 +11,7 @@ import 'quasar/src/css/index.sass'
 
 import App from './App.vue'
 import router from './router'
+import store from './vuex/store';
 import VueDOMPurifyHTML from 'vue-dompurify-html';
 
 const app = createApp(App)
@@ -19,6 +20,7 @@ app.use(Quasar, {
     plugins: {Loading},
     config: {Loading},
 })
+app.use(store);
 app.use(router)
 app.use(VueDOMPurifyHTML);
 

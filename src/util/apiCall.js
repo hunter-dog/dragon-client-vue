@@ -1,12 +1,18 @@
 import axios from 'axios';
+import {ACCESS_TOKEN} from '@/constants/loginInfo';
 
-// const BASE_URL = 'http://localhost:8087';
-const BASE_URL = 'http://3.38.51.154:8087';
+const BASE_URL = 'http://localhost:8087';
+// const BASE_URL = 'http://3.38.51.154:8087';
 
+const generateHeaders = (customHeaders) => {
+    let headers = customHeaders ? {...customHeaders} : {'Content-Type': 'application/json'};
+    headers.Authorization = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`;
 
+    return headers;
+};
 
 const createAxiosConfig = (apiSpec, headers, parameters, file) => {
-
+    console.log('에피아스펙=> ', apiSpec);
     const url = apiSpec.path.startsWith('http') ? apiSpec.path : BASE_URL + apiSpec.path;
     const axiosConfig = {
         method: apiSpec.method,
@@ -60,8 +66,8 @@ const handleErrorByCode = (code) => {
     }
 };
 
-const apiCall = (apiSpec, parameters) => {    
-    const headers = {'Content-Type': 'application/json'};
+const apiCall = (apiSpec, parameters, customHeaders) => {    
+    const headers = generateHeaders(customHeaders);
     const config = createAxiosConfig(apiSpec, headers, parameters);    
     
     return requestWithAxios(config);
